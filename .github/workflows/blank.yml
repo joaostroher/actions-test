@@ -1,20 +1,14 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
-
-# Controls when the workflow will run
-on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
+on:  
+  push
 
 jobs:
-  build:    
+  build:
+    env:  
+      SCRIPTS_ENVIRONMENT: "${{ github.ref_type	== 'tag' && 'production' || 'development' }}"
     runs-on: ubuntu-latest    
     steps:      
       - uses: actions/checkout@v2      
-      - name: Set production environment        
-        run: export SCRIPTS_ENVIRONMENT=production
       - name: Run a one-line script
         run: |
           echo $GITHUB_SHA
