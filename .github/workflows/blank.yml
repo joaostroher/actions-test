@@ -13,5 +13,9 @@ jobs:
     runs-on: ubuntu-latest    
     steps:      
       - uses: actions/checkout@v2      
+      - name: Set production environment        
+        run: export SCRIPTS_ENVIRONMENT=production
       - name: Run a one-line script
-        run: echo $GITHUB_SHA
+        run: |
+          echo $GITHUB_SHA
+          echo $SCRIPTS_ENVIRONMENT
