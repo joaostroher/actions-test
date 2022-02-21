@@ -3,13 +3,21 @@ on:
   push
 
 jobs:
-  build:
-    env:  
-      SCRIPTS_ENVIRONMENT: "${{ github.ref_type	== 'tag' && 'production' || 'development' }}"
-    runs-on: ubuntu-latest    
-    steps:      
-      - uses: actions/checkout@v2      
-      - name: Run a one-line script
-        run: |
-          echo $GITHUB_SHA
-          echo $SCRIPTS_ENVIRONMENT
+ exit_early:
+   runs-on: ubuntu-latest
+   steps:
+     - uses: actions/checkout@v2           
+       with:
+         fetch-depth: 0
+     - name: Check Exit Early
+       run: echo "::set-output name=tag::$(git describe --tags --exact-match ${{github.ref_name}})"      
+ build:
+   env:  
+     SCRIPTS_ENVIRONMENT: "${{ github.ref_type	== 'tag' && 'production' || 'development' }}"
+   runs-on: ubuntu-latest    
+   steps:      
+     - uses: actions/checkout@v2      
+     - name: Run a one-line script
+       run: |
+         echo $GITHUB_SHA
+         echo $SCRIPTS_ENVIRONMENT
