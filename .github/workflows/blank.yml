@@ -19,5 +19,6 @@ jobs:
      - uses: actions/checkout@v2      
      - name: Run a one-line script
        run: |
+         echo ${{ jobs.exit_early.tag }}
          echo $GITHUB_SHA
          echo $SCRIPTS_ENVIRONMENT
