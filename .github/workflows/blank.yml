@@ -15,6 +15,7 @@ jobs:
    outputs:
     tag: ${{ steps.is-tag.outputs.tag }}
  build:
+   if: ${{ needs.exit_early.tag != github.ref_name }}
    env:  
      SCRIPTS_ENVIRONMENT: "${{ github.ref_type	== 'tag' && 'production' || 'development' }}"
    runs-on: ubuntu-latest    
