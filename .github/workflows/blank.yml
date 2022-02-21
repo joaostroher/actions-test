@@ -10,15 +10,19 @@ jobs:
        with:
          fetch-depth: 0
      - name: Check Exit Early
+       id: is-tag
        run: echo "::set-output name=tag::$(git describe --tags --exact-match ${{github.ref_name}})"      
+   outputs:
+    tag: ${{ steps.is-tag.outputs.tag }}
  build:
    env:  
      SCRIPTS_ENVIRONMENT: "${{ github.ref_type	== 'tag' && 'production' || 'development' }}"
    runs-on: ubuntu-latest    
+   needs: exit_early
    steps:      
      - uses: actions/checkout@v2      
      - name: Run a one-line script
        run: |
-         echo ${{ jobs.exit_early.tag }}
+         echo ${{ needs.exit_early.tag }}
          echo $GITHUB_SHA
          echo $SCRIPTS_ENVIRONMENT
