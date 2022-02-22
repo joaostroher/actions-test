@@ -27,3 +27,5 @@ jobs:
     uses: ./.github/workflows/slack_notification.yml
     with:
       status: ${{ needs.build_deploy.result }}  
+    secrets:
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
