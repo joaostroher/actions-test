@@ -12,11 +12,11 @@ jobs:
      - name: Check Exit Early
        id: gettag
        run: |          
-          echo ::set-output name=tag::$(git describe --tags --exact-match ${{ github.ref_name }})
+          echo ::set-output name=tag::$(git describe --tags --exact-match ${{ github.ref_name }} 2>/dev/null)
    outputs:
-    exit: ${{ github.ref_type	== 'branch' && steps.gettag.outputs.tag != github.ref_name }}    
+     continue: ${{ (github.ref_type == 'tag') || (steps.gettag.outputs.tag == '') }}
  build:
-   if: ${{ !needs.check_exit_early.outputs.exit }}
+   if: ${{ !needs.check_exit_early.outputs.continue }}
    env:  
      SCRIPTS_ENVIRONMENT: "${{ github.ref_type== 'tag' && 'production' || 'development' }}"
    runs-on: ubuntu-latest    
