@@ -4,18 +4,7 @@ on:
 
 jobs:
   check_exit_early:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Check if branch is a tag
-        id: check-tag
-        run: |
-          echo ::set-output name=tag::$(git describe --tags --exact-match ${{ github.ref_name }} 2>/dev/null)
-    outputs:
-      exit: ${{ github.ref_type == 'branch' && !!steps.check-tag.outputs.tag }}
+    uses: ./.github/workflows/check_exit_early.yml
   build_deploy:
     if: needs.check_exit_early.outputs.exit != 'true'
     env:  
