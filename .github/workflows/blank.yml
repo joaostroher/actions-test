@@ -3,35 +3,29 @@ on:
   push
 
 jobs:
- check_exit_early:
-   runs-on: ubuntu-latest
-   steps:
-     - uses: actions/checkout@v2           
-       with:
-         fetch-depth: 0
-     - name: Check Exit Early
-       id: gettag
-       run: |          
+  check_exit_early:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Check if branch is a tag
+        id: check-tag
+        run: |
           echo ::set-output name=tag::$(git describe --tags --exact-match ${{ github.ref_name }} 2>/dev/null)
-     - name: test
-       run: | 
-         echo ${{ steps.gettag.outputs.tag }}
-         echo ${{ !steps.gettag.outputs.tag }}         
-         echo ${{ github.ref_type == 'tag' || !steps.gettag.outputs.tag }}
-   outputs:
-     continue: ${{ github.ref_type == 'tag' || !steps.gettag.outputs.tag }}
-     tag: ${{ steps.gettag.outputs.tag }}
- build:
-   if: needs.check_exit_early.outputs.continue == 'true'
-   env:  
-     SCRIPTS_ENVIRONMENT: "${{ github.ref_type== 'tag' && 'production' || 'development' }}"
-   runs-on: ubuntu-latest    
-   needs: check_exit_early
-   steps:      
-     - uses: actions/checkout@v2      
-     - name: Run a one-line script
-       run: |
-         echo ${{ needs.check_exit_early.outputs.continue }}
-         echo ${{ needs.check_exit_early.outputs.tag }}
-         echo $GITHUB_SHA
-         echo $SCRIPTS_ENVIRONMENT
+    outputs:
+      exit: ${{ github.ref_type == 'branch' && steps.check-tag.outputs.tag }}
+  build_deploy:
+    if: needs.check_exit_early.outputs.exit != 'true'
+    env:  
+      SCRIPTS_ENVIRONMENT: "${{ github.ref_type== 'tag' && 'production' || 'development' }}"
+    runs-on: ubuntu-latest    
+    needs: check_exit_early
+    steps:      
+      - uses: actions/checkout@v2      
+      - name: Run a one-line script
+        run: |
+          echo ${{ needs.check_exit_early.outputs.exit }}         
+          echo $GITHUB_SHA
+          echo $SCRIPTS_ENVIRONMENT
