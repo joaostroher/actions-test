@@ -14,7 +14,7 @@ jobs:
        run: |          
           echo ::set-output name=tag::$(git describe --tags --exact-match cfc9e4b18f626f4e05a1b5d83e9d6456ea85feab 2>/dev/null)
    outputs:
-     continue: ${{ (github.ref_type == 'tag') || (steps.gettag.outputs.tag == '') }}
+     continue: ${{ github.ref_type == 'tag' || !steps.gettag.outputs.tag }}
  build:
    if: ${{ needs.check_exit_early.outputs.continue }}
    env:  
