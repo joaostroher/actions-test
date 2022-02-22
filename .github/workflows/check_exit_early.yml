@@ -9,6 +9,7 @@ on:
 
 jobs:
   check_exit_early:
+    name: Check exit early
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
