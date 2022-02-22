@@ -24,4 +24,5 @@ jobs:
           SLACK_COLOR: ${{ inputs.status }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           MSG_MINIMAL: ref,actions url,commit
-          SLACK_TITLE: ${{ github.repository	}}
+          SLACK_TITLE: ${{ github.repository }}
+          SLACK_MESSAGE: ${{ github.event.head_commit.message }}
