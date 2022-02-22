@@ -22,7 +22,7 @@ jobs:
           exit 1
   slack_notification:
     needs: build_deploy
-    if: needs.check_exit_early.outputs.exit != 'true'
+    if: ${{ !cancelled() && needs.check_exit_early.outputs.exit != 'true' }}
     name: Slack Notification
     uses: ./.github/workflows/slack_notification.yml
     with:
