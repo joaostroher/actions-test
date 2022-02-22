@@ -10,13 +10,13 @@ jobs:
        with:
          fetch-depth: 0
      - name: Check Exit Early
-       id: get-tag
+       id: gettag
        run: |
           echo $(git describe --tags --exact-match e8d1e1d2f9a53cf9b9e881037e08988ff85b7e83)
           echo ::set-output name=tag::$(git describe --tags --exact-match e8d1e1d2f9a53cf9b9e881037e08988ff85b7e83)
    outputs:
-    exit: ${{ github.ref_type	== 'branch' && steps.get-tag.outputs.tag != github.ref_name }}
-    tag: ${{ steps.get-tag.outputs.tag }}
+    exit: ${{ github.ref_type	== 'branch' && steps.gettag.outputs.tag != github.ref_name }}
+    tag: ${{ steps.gettag.outputs.tag }}
  build:
    if: ${{ !needs.check_exit_early.exit }}
    env:  
