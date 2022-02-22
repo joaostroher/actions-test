@@ -18,7 +18,8 @@ jobs:
         run: |
           echo ${{ needs.check_exit_early.outputs.exit }}         
           echo $GITHUB_SHA
-          echo $SCRIPTS_ENVIRONMENT          
+          echo $SCRIPTS_ENVIRONMENT        
+          exit 1
   slack_notification:
     needs: build_deploy
     if: needs.check_exit_early.outputs.exit != 'true'
