@@ -1,0 +1,22 @@
+name: Slack notification
+
+on:
+  workflow_call:
+    inputs:
+      status:
+        required: true
+        type: string
+        
+jobs:        
+  slack_notification:
+    if: ${{ !cancelled() }}
+    name: Slack Notification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_FOOTER: ''
+          SLACK_COLOR: ${{ inputs.status }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
