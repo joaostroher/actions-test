@@ -21,7 +21,7 @@ jobs:
           echo $SCRIPTS_ENVIRONMENT          
   slack_notification:
     needs: build_deploy
-    if: always()
+    if: ${{ !cancelled() }}
     name: Slack Notification
     runs-on: ubuntu-latest
     steps:
