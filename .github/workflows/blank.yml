@@ -13,6 +13,12 @@ jobs:
        id: gettag
        run: |          
           echo ::set-output name=tag::$(git describe --tags --exact-match cfc9e4b18f626f4e05a1b5d83e9d6456ea85feab 2>/dev/null)
+     - name: test
+       run: | 
+         echo ${{ steps.gettag.outputs.tag }}
+         echo ${{ steps.gettag.outputs.tag == '' }}
+         echo ${{ steps.gettag.outputs.tag != '' }}
+         echo ${{ !steps.gettag.outputs.tag }}         
    outputs:
      continue: ${{ github.ref_type == 'tag' || steps.gettag.outputs.tag == '' }}
      tag: ${{ steps.gettag.outputs.tag }}
