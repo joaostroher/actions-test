@@ -16,9 +16,8 @@ jobs:
      - name: test
        run: | 
          echo ${{ steps.gettag.outputs.tag }}
-         echo ${{ steps.gettag.outputs.tag == '' }}
-         echo ${{ steps.gettag.outputs.tag != '' }}
          echo ${{ !steps.gettag.outputs.tag }}         
+         echo ${{ github.ref_type == 'tag' || !steps.gettag.outputs.tag }}
    outputs:
      continue: ${{ github.ref_type == 'tag' || !steps.gettag.outputs.tag }}
      tag: ${{ steps.gettag.outputs.tag }}
@@ -32,6 +31,7 @@ jobs:
      - uses: actions/checkout@v2      
      - name: Run a one-line script
        run: |
+         echo ${{ needs.check_exit_early.outputs.continue }}
          echo ${{ needs.check_exit_early.outputs.tag }}
          echo $GITHUB_SHA
          echo $SCRIPTS_ENVIRONMENT
