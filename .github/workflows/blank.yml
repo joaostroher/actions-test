@@ -16,7 +16,7 @@ jobs:
    outputs:
      continue: ${{ (github.ref_type == 'tag') || (steps.gettag.outputs.tag == '') }}
  build:
-   if: ${{ !needs.check_exit_early.outputs.continue }}
+   if: ${{ needs.check_exit_early.outputs.continue }}
    env:  
      SCRIPTS_ENVIRONMENT: "${{ github.ref_type== 'tag' && 'production' || 'development' }}"
    runs-on: ubuntu-latest    
