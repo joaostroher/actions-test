@@ -12,7 +12,7 @@ jobs:
      - name: Check Exit Early
        id: gettag
        run: |          
-          echo ::set-output name=tag::$(git describe --tags --exact-match cfc9e4b18f626f4e05a1b5d83e9d6456ea85feab 2>/dev/null)
+          echo ::set-output name=tag::$(git describe --tags --exact-match ${{ github.ref_name }} 2>/dev/null)
      - name: test
        run: | 
          echo ${{ steps.gettag.outputs.tag }}
