@@ -18,7 +18,9 @@ jobs:
           echo ${{ needs.check_exit_early.outputs.exit }}         
           echo $GITHUB_SHA
           echo $SCRIPTS_ENVIRONMENT
-  slackNotification:
+  slack_notification:
+    needs: build_deploy
+    if: always()
     name: Slack Notification
     runs-on: ubuntu-latest
     steps:
@@ -26,4 +28,6 @@ jobs:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:
+          SLACK_FOOTER: ''
+          SLACK_COLOR: ${{ needs.build_deploy.result }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
