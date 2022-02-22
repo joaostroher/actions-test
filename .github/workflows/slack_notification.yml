@@ -6,6 +6,9 @@ on:
       status:
         required: true
         type: string
+    secrets:
+      SLACK_WEBHOOK:
+        required: true
         
 jobs:        
   slack_notification:
